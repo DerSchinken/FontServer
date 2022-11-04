@@ -243,4 +243,4 @@ fonts.sqlite3
 src/fonts/*
 !src/fonts/ExampleFont/*
 
-*.env
+server.env

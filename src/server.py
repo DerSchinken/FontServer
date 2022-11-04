@@ -2,11 +2,9 @@ from flask import Flask, render_template, request, send_from_directory, make_res
 from src.fonts_downloader import get_font, update_fonts
 from _thread import start_new_thread
 from os import urandom, path
-import sqlite3
 import time
 
 app = Flask(__name__)
-db = sqlite3.connect("fonts.sqlite3")
 
 src_root = __file__.replace("\\", "/").replace("/src/server.py", "") + "/src"
 
