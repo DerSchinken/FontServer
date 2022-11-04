@@ -3,11 +3,11 @@ from dotenv import dotenv_values
 from os import listdir
 import requests
 
-package_root = __file__.replace("\\", "/").replace("/src/fonts_downloader.py", "")
+root = __file__.replace("\\", "/").replace("/src/fonts_downloader.py", "")
 
 google_fonts_service_url = 'https://fonts.googleapis.com/css?family='
-host = dotenv_values(f"{package_root}/server.env")["DOMAIN_NAME"]
-package_root += "/src"
+host = dotenv_values(f"{root}/server.env")["DOMAIN_NAME"]
+src_root = f"{root}/src"
 
 
 def get_font(font_family: str) -> None or int:
@@ -26,13 +26,13 @@ def get_font(font_family: str) -> None or int:
         if line.split(")")[0].replace("url(", "").replace(" ", "").startswith("https://"):
             font_urls.append(line.split(")")[0].replace("url(", "").replace(" ", ""))
 
-    font_downloader = FastDownloader(f"{package_root}/fonts/{font_family}/fonts", overwrite=True, max_threads=5)
+    font_downloader = FastDownloader(f"{src_root}/fonts/{font_family}/fonts", overwrite=True, max_threads=5)
     font_downloader.download(font_urls.copy())
     font_downloader.wait_to_finish()
 
     for font_url in font_urls:
         font_script = font_script.replace(font_url, f"{host}/fonts/{font_family}/{font_url.split('/')[-1]}")
-    with open(f"{package_root}/fonts/{font_family}/style.css", "w") as f:
+    with open(f"{src_root}/fonts/{font_family}/style.css", "w") as f:
         f.write(font_script)
 
 
