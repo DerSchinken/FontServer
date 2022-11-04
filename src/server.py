@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, send_from_directory
-from fonts_dowlader import get_font, update_fonts
+from flask import Flask, render_template, request, send_from_directory, make_response
+from src.fonts_downloader import get_font, update_fonts
 from _thread import start_new_thread
 from os import urandom, path
 import sqlite3
@@ -8,6 +8,8 @@ import time
 app = Flask(__name__)
 db = sqlite3.connect("fonts.sqlite3")
 
+src_root = __file__.replace("\\", "/").replace("/src/server.py", "") + "/src"
+
 
 @app.route("/css", methods=["GET"])
 def get_font_script():
@@ -15,15 +17,19 @@ def get_font_script():
     Serves the font loading script
     """
     font_family = request.args.get("family", None)
-    if not font_family:
+    if not font_family or font_family == "ExampleFont":
         return page_not_found()
-    if not path.exists(path.join("fonts", font_family)):
-        get_font(font_family)
+    if not path.exists(path.join(src_root, "fonts", font_family)):
+        if get_font(font_family) == 404:
+            return page_not_found()
 
-    with open(path.join("fonts", font_family, "style.css"), "r") as f:
+    with open(path.join(src_root, "fonts", font_family.replace(" ", "+"), "style.css"), "r") as f:
         script = f.read()
 
-    return script
+    response = make_response(script)
+    response.mimetype = "text/css"
+
+    return response
 
 
 @app.route("/fonts/<fontname>/<filename>")
@@ -31,8 +37,9 @@ def get_font_file(fontname, filename):
     """
     Serves the font files
     """
-    if path.exists(path.join("fonts", fontname, filename)):
-        return send_from_directory("fonts", fontname+'/'+filename)
+    print(path.join(src_root, "fonts", fontname, filename))
+    if path.exists(path.join(src_root, "fonts", fontname, "fonts", filename)):
+        return send_from_directory(src_root+"/fonts", fontname+"/fonts/"+filename)
 
     return page_not_found(tried_url=f"fonts/{fontname}/{filename}")
 
@@ -40,7 +47,7 @@ def get_font_file(fontname, filename):
 @app.route('/')
 def index():
     # TODO list of all available fonts and import link generator
-    return render_template('index.html')
+    return render_template("index.html")
 
 
 @app.errorhandler(404)

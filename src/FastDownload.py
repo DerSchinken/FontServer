@@ -28,7 +28,13 @@ class FastDownloader:
     _total_time = 0
     _threads = []
 
-    def __init__(self, output_dir: str = "downloaded", max_threads: int = "inf", info: bool = False) -> None:
+    def __init__(
+            self,
+            output_dir: str = "downloaded",
+            overwrite: bool = False,
+            max_threads: int = "inf",
+            info: bool = False
+    ) -> None:
         """
         Configures the downloader and creates the output directory if not already existing
 
@@ -37,6 +43,7 @@ class FastDownloader:
         :param info: If True, prints information about the download process
         """
         self._output_dir = output_dir
+        self._overwrite = overwrite
         if max_threads == "inf":
             max_threads = float("inf")
         self._max_threads = max_threads
@@ -51,6 +58,7 @@ class FastDownloader:
 
         :param urls: A list of urls (the list of files to download)
         """
+        urls = urls.copy()
         if not list(set(urls)) == urls:  # Detect duplicates
             if self._info:
                 print(f"Found {len(urls) - len(list(set(urls)))} duplicated url(s). Removing and continuing...")
@@ -93,7 +101,7 @@ class FastDownloader:
         file = self._downloader.get(url)
         filename = url.split("/")[-1]
         # Check if the file already exists
-        if path.exists(path.join(self._output_dir, filename)):
+        if path.exists(path.join(self._output_dir, filename)) and not self._overwrite:
             duplicate = 1
             old_filename = filename
             # Generate new filename in the format "{filename} ({duplicate number}).{extension}"
