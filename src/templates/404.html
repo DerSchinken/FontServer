@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Not Found</title>
+</head>
+<body>
+<h1>404</h1>
+{% if tried_url != "None" %}
+    "{{ tried_url }}" not found!
+{% else %}
+    404 not found!
+{% endif %}
+</body>
+</html>
