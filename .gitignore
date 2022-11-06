@@ -244,3 +244,4 @@ src/fonts/*
 !src/fonts/ExampleFont/*
 
 server.env
+*.db

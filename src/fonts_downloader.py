@@ -5,7 +5,7 @@ import requests
 
 root = __file__.replace("\\", "/").replace("/src/fonts_downloader.py", "")
 
-google_fonts_service_url = 'https://fonts.googleapis.com/css?family='
+google_fonts_service_url = 'https://fonts.googleapis.com/css?family={font_family}'
 host = dotenv_values(f"{root}/server.env")["DOMAIN_NAME"]
 src_root = f"{root}/src"
 
@@ -15,7 +15,7 @@ def get_font(font_family: str) -> None or int:
     Download font from Google Fonts
     """
     font_family = font_family.replace(" ", "+")
-    script_url = f"{google_fonts_service_url}{font_family}"
+    script_url = google_fonts_service_url.format(font_family=font_family)
     font_script = requests.get(script_url).text
 
     if "400" in font_script and "Missing font family" in font_script:
@@ -40,7 +40,7 @@ def update_fonts():
     """
     Update all fonts in the fonts directory
     """
-    for font in listdir("fonts"):
+    for font in listdir(f"{src_root}/fonts"):
         if font == "ExampleFont":
             continue
         get_font(font.replace(" ", "+"))

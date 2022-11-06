@@ -2,11 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <title>Title</title>
+    <title>FontServer</title>
 </head>
 <body>
-
+<header>
+    <nav>
+        <ul>
+            <div class="logo-container centered">
+                <img class="logo" src="{{ url_for('static', filename='img/logo_transparent.png') }}"  alt="FontServer"/>
+            </div>
+        </ul>
+    </nav>
+</header>
+<div class="content centered">
+    <div class="font-list">
+        <label class="centered centered2" for="myInput" style="display: block; white-space: nowrap;width:60%">
+            <input class="centered centered2" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for fonts..">
+        </label>
+        <ul id="myUL">
+            {% for fontname in available_fonts %}
+                <li class="li-border-bottom"><a href="view/{{ fontname }}">{{ fontname }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<footer>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+</footer>
 </body>
 </html>

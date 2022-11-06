@@ -1,0 +1,130 @@
+body {
+    background-color: #262a2b;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #eeeeef;
+    padding: 0;
+    width: 80%;
+    margin: 0 auto;
+}
+
+nav {
+    margin-top: 1rem;
+    margin-right: auto;
+    margin-left: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 1rem;
+}
+
+a:visited {
+    color: #1a1a1a;
+}
+a {
+    color: #1a1a1a;
+}
+
+code {
+    font-family: monospace;
+    display: block;
+    background: none;
+    white-space: pre;
+    border-radius: 10px;
+    background: #1a1a1a;
+    padding: 5px 5px 5px 20px;
+}
+
+nav ul li {
+    position: absolute;
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.content {
+    margin-top: 1rem;
+}
+
+.font-list {
+    width: 100%;
+}
+
+/*noinspection CssReplaceWithShorthandSafely*/
+#myInput {
+    width: 90%;
+    background: #a6a6a6;
+    background-image: url('../img/searchicon2.png'); /* Add a search icon to input */
+    background-size: 21px;
+    background-position: 11px 10px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #313131; /* Add a grey border */
+    border-radius: 10px;
+    margin-bottom: 12px; /* Add some space below the input */
+}
+
+#myUL {
+    /* Remove default list styling */
+    border-radius: 10px;
+    list-style-type: none;
+    width: 100%;
+    background: #a6a6a6;
+    padding: 0;
+}
+
+#myUL li a {
+    /*border: 1px solid #ddd; /* Add a border to all links */
+    margin-top: -1px; /* Prevent double borders */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove default text underline */
+    font-size: 18px; /* Increase the font-size */
+    display: block; /* Make it into a block element to fill the whole list */
+    transition: 0.3s;
+}
+.li-border-bottom {
+    border-bottom: 1px solid black;
+    margin-bottom: 1px;
+}
+
+#myUL li a:hover:not(.header) {
+    background-color: #777777; /* Add a hover effect to all links, except for headers */
+}
+#myUL li a:hover:not(.header):first-child, #myUL li a:hover:not(.header):last-child {
+    border-radius: 10px;
+}
+
+.big-paragraph {
+    font-size: 1.5rem;
+}
+
+.content {
+    flex-direction: column;
+}
+
+.logo {
+    width: 19%;
+    height: auto;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+}
+.centered2 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.right {
+    display: flex;
+    justify-content: flex-end;
+}

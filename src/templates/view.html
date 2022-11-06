@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family={{ fontname }}" rel="stylesheet">
+
+    <style>
+        .example-font-text {
+            font-family: '{{ fontname_unformatted }}';
+            font-size: 3rem;
+        }
+    </style>
+    <title>FontServer</title>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <div class="logo-container centered">
+                <img class="logo" src="{{ url_for('static', filename='img/logo_transparent.png') }}"  alt="FontServer"/>
+            </div>
+        </ul>
+    </nav>
+</header>
+<div class="content centered centered-text">
+    <p class="example-font-text">The quick brown fox jumps over the lazy dog.</p> <br/>
+    <div style="text-align: left;">
+        <p class="big-paragraph">How to use this font:</p>
+        <pre><code><xmp><link href="{{ domain_name }}/css?family={{ fontname }}" rel="stylesheet"></xmp></code></pre>
+    </div>
+</div>
+</body>
+</html>
