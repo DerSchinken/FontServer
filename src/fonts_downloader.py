@@ -5,7 +5,7 @@ import requests
 
 root = __file__.replace("\\", "/").replace("/src/fonts_downloader.py", "")
 
-google_fonts_service_url = 'https://fonts.googleapis.com/css?family={font_family}'
+google_fonts_service_url = 'https://fonts.googleapis.com/css2?family={font_family}'
 host = dotenv_values(f"{root}/server.env")["DOMAIN_NAME"]
 src_root = f"{root}/src"
 
