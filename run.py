@@ -25,9 +25,10 @@ db.commit()
 db.close()
 
 if __name__ == "__main__":
+    debug = True if config["DEBUG"] == "1" else False
     server.start(
         host=config["DOMAIN_NAME"],
         port=config["PORT"],
         secret_key=config["SECRET_KEY"],
-        debug=bool(config["DEBUG"])
+        debug=debug
     )
