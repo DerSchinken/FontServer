@@ -14,11 +14,9 @@ def get_font(font_family: str) -> None or int:
     """
     Download font from Google Fonts
     """
-    font_family = font_family.replace(" ", "+")
+    font_family = font_family.replace("+", " ").title().replace(" ", "+")
     script_url = google_fonts_service_url.format(font_family=font_family)
     font_script = requests.get(script_url).text
-
-    print(script_url)
 
     if "400" in font_script and "Missing font family" in font_script:
         return 404
