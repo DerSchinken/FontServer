@@ -4,7 +4,7 @@ from src import server
 import sqlite3
 
 src_root = '/'.join(__file__.replace('\\', '/').split('/')[:-1]) + "/src"
-db = sqlite3.connect(src_root+'/'+"fontserver.db")
+db = sqlite3.connect(src_root + '/' + "fontserver.db")
 config = dotenv_values("server.env")
 
 try:
@@ -24,6 +24,7 @@ except sqlite3.OperationalError:
 db.commit()
 db.close()
 
+
 def start():
     debug = True if config["DEBUG"] == "1" else False
     server.start(
@@ -32,6 +33,7 @@ def start():
         secret_key=config["SECRET_KEY"],
         debug=debug
     )
+
 
 if __name__ == "__main__":
     debug = True if config["DEBUG"] == "1" else False

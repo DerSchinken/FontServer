@@ -13,7 +13,9 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 src_root = __file__.replace("\\", "/").replace("/src/server.py", "") + "/src"
-google_api_key = dotenv_values(f"{src_root.replace('/src', '')}/server.env")["GOOGLE_API_KEY"]
+config = dotenv_values(f"{src_root.replace('/src', '')}/server.env")
+google_api_key = config["GOOGLE_API_KEY"]
+google_fonts = requests.get(f"https://www.googleapis.com/webfonts/v1/webfonts?key={google_api_key}").json()
 
 
 @app.route("/css", methods=["GET"])
@@ -47,7 +49,7 @@ def view(fontname):
         "view.html",
         fontname=fontname.replace(" ", "+"),
         fontname_unformatted=fontname,
-        domain_name=dotenv_values(f"{src_root.replace('/src', '')}/server.env")["DOMAIN_NAME"]
+        domain_name=(config["DOMAIN_NAME"] + f":{config['PORT']}" if config["PORT"] != "80" else "")
     )
 
 
@@ -67,7 +69,7 @@ def get_font_file(fontname, filename):
 @auth.login_required
 def index():
     available_fonts = []
-    for font in requests.get(f"https://www.googleapis.com/webfonts/v1/webfonts?key={google_api_key}").json()["items"]:
+    for font in google_fonts["items"]:
         available_fonts.append(font["family"])
     # TODO list of all available fonts and import link generator
     return render_template("index.html", available_fonts=available_fonts)
@@ -96,9 +98,13 @@ def font_updater(t: int = 604800):
 
     :param t: time to wait before next update (in seconds)
     """
+    global google_fonts
     while True:
         update_fonts()
         time.sleep(t)
+        google_fonts = requests.get(
+            f"https://www.googleapis.com/webfonts/v1/webfonts?key={google_api_key}"
+        ).json()["items"]
 
 
 def ignore(*args, **kwargs) -> None:

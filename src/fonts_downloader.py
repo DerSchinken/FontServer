@@ -2,12 +2,18 @@ from src.FastDownload import FastDownloader
 from dotenv import dotenv_values
 from os import listdir
 import requests
+import time
 
 root = __file__.replace("\\", "/").replace("/src/fonts_downloader.py", "")
+config = dotenv_values(f"{root}/server.env")
 
 google_fonts_service_url = 'https://fonts.googleapis.com/css2?family={font_family}'
-host = dotenv_values(f"{root}/server.env")["DOMAIN_NAME"]
+host = config["DOMAIN_NAME"]
+port = config["PORT"]
 src_root = f"{root}/src"
+
+if port != "80":
+    host += f":{port}"
 
 
 def get_font(font_family: str) -> None or int:
@@ -44,3 +50,4 @@ def update_fonts():
         if font == "ExampleFont":
             continue
         get_font(font.replace(" ", "+"))
+        time.sleep(0.1)
