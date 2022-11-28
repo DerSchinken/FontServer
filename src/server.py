@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_from_directory, make_response
 from src.fonts_downloader import get_font, update_fonts
 from werkzeug.security import check_password_hash
+from flask_cors import CORS, cross_origin
 from flask_httpauth import HTTPBasicAuth
 from _thread import start_new_thread
 from dotenv import dotenv_values
@@ -10,6 +11,8 @@ import sqlite3
 import time
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/fonts/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 auth = HTTPBasicAuth()
 
 src_root = __file__.replace("\\", "/").replace("/src/server.py", "") + "/src"
@@ -54,6 +57,7 @@ def view(fontname):
 
 
 @app.route("/fonts/<fontname>/<filename>")
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def get_font_file(fontname, filename):
     """
     Serves the font files
@@ -76,7 +80,6 @@ def index():
 
 
 @app.errorhandler(404)
-@auth.login_required
 def page_not_found(e=None, tried_url=None):
     ignore(e)
     return render_template("404.html", tried_url=str(tried_url)), 404

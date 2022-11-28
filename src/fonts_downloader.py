@@ -37,7 +37,7 @@ def get_font(font_family: str) -> None or int:
     font_downloader.wait_to_finish()
 
     for font_url in font_urls:
-        font_script = font_script.replace(font_url, f"{host}/fonts/{font_family}/{font_url.split('/')[-1]}")
+        font_script = font_script.replace(font_url, f"'/fonts/{font_family}/{font_url.split('/')[-1]}'")
     with open(f"{src_root}/fonts/{font_family}/style.css", "w") as f:
         f.write(font_script)
 
