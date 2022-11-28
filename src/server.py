@@ -150,7 +150,7 @@ def font_available(fontname: str) -> bool:
     :param fontname: font name
     """
     for font in google_fonts:
-        if font["family"] == fontname:
+        if font["family"].replace(" ", "+") == fontname:
             return True
 
     return False
