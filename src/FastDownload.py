@@ -59,7 +59,7 @@ class FastDownloader:
         :param urls: A list of urls (the list of files to download)
         """
         urls = urls.copy()
-        if not list(set(urls)) == urls:  # Detect duplicates
+        if len(urls) - len(list(set(urls))) > 0:  # Detect duplicates
             if self._info:
                 print(f"Found {len(urls) - len(list(set(urls)))} duplicated url(s). Removing and continuing...")
             urls = list(set(urls))  # remove all duplicates

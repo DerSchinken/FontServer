@@ -85,7 +85,7 @@ def index() -> Response:
     Homepage listing all available fonts
     """
     available_fonts = []
-    for font in google_fonts["items"]:
+    for font in google_fonts:
         available_fonts.append(font["family"])
     # TODO list of all available fonts and import link generator
     return Response(render_template("index.html", available_fonts=available_fonts))
@@ -134,12 +134,12 @@ def font_updater(t: int = 604800) -> None:
         ).json()["items"]
 
 
-def download_all_fonts() -> None:
+def download_all_fonts(info: bool = True) -> None:
     """
     Download all existing google fonts
     """
     for font in google_fonts:
-        get_font(font["family"])
+        get_font(font["family"], info=info)
         time.sleep(0.1)
 
 
