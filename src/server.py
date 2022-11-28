@@ -177,7 +177,6 @@ def start(host: str, port: int, secret_key: str, debug: bool = False) -> None:
     :param secret_key: Secret key
     :param debug: Debug
     """
-    download_all_fonts()
     app.config["secret_key"] = urandom(24) if secret_key is None else secret_key
     start_new_thread(font_updater, ())
     app.run(
