@@ -28,8 +28,11 @@
 <div class="content centered centered-text">
     <p class="example-font-text">The quick brown fox jumps over the lazy dog.</p> <br/>
     <div style="text-align: left;">
-        <p class="big-paragraph">How to use this font:</p>
-        <pre><code><xmp><link href="{{ domain_name }}/css?family={{ fontname }}" rel="stylesheet"></xmp></code></pre>
+        <h3 class="big-paragraph">How to use this font:</h3>
+        <p>In the head tag:</p>
+        <pre><code><xmp><link href="http://{{ domain_name }}/css?family={{ fontname }}" rel="stylesheet"></xmp></code></pre>
+        <p>Then where you want to use the font:</p>
+        <pre><code><xmp>font-family: "{{ fontname.replace('+', ' ') }}";</xmp></code></pre>
     </div>
 </div>
 </body>
