@@ -6,6 +6,7 @@ from flask_httpauth import HTTPBasicAuth
 from _thread import start_new_thread
 from dotenv import dotenv_values
 from os import urandom, path
+from waitress import serve
 import requests
 import sqlite3
 import time
@@ -25,6 +26,9 @@ google_fonts = requests.get(f"https://www.googleapis.com/webfonts/v1/webfonts?ke
 def get_font_script() -> Response:
     """
     Serves the font loading script
+
+    TODO: Don't download fonts from the google service and use the open source repository
+    https://github.com/google/fonts (why on earth didn't I do this this way???)
     """
     font_family = request.args.get("family", None)
     if not font_family or font_family == "ExampleFont" and not font_available(font_family):
@@ -61,7 +65,7 @@ def view(fontname: str) -> Response:
 
 
 @app.route("/fonts/<fontname>/<filename>")
-@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
+@cross_origin() # origin='*', headers=['Content-Type', 'Authorization']
 def get_font_file(fontname: str, filename: str) -> Response:
     """
     Serves the font files
@@ -111,7 +115,8 @@ def verify_password(username: str, password: str or bytes) -> bool:
     :param username: Username
     :param password: Password
     """
-    db = sqlite3.connect(src_root+"/"+"fontserver.db")
+    # We always need to create a new sqlite object because it can't be used across threads
+    db = sqlite3.connect(src_root + "/" + "fontserver.db")
     users = db.execute("SELECT * FROM users").fetchall()
 
     for user_data in users:
@@ -179,11 +184,18 @@ def start(host: str, port: int, secret_key: str, debug: bool = False) -> None:
     """
     app.config["secret_key"] = urandom(24) if secret_key is None else secret_key
     start_new_thread(font_updater, ())
-    app.run(
-        host=host,
-        port=port,
-        debug=debug
-    )
+    if not debug:
+        serve(
+            app,
+            host=host,
+            port=port,
+        )
+    else:
+        app.run(
+            host=host,
+            port=port,
+            debug=debug
+        )
 
 
 if __name__ == "__main__":
